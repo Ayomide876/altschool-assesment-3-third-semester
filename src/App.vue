@@ -1,26 +1,33 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="min-h-screen bg-gray-50">
+    <div v-if="error">
+       <button @click="retry">Retry</button>
+    </div>
+
+    <router-view v-slot="{ Component }" v-else>
+      <Suspense>
+        <template #default>
+          <component :is="Component" :key="$route.path" />
+        </template>
+        <template #fallback>
+          <div class="grid grid-cols-3 gap-4">
+            <SkeletonCard v-for="i in 6" :key="i" />
+          </div>
+        </template>
+      </Suspense>
+    </router-view>
+  </div>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
+<script setup>
+import { ref, onErrorCaptured } from 'vue';
+import SkeletonCard from './components/SkeletonCard.vue';
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+const error = ref(null);
+const retry = () => { error.value = null; };
+
+onErrorCaptured((err) => {
+  error.value = err.message;
+  return false;
+});
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
