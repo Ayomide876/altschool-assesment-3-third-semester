@@ -42,7 +42,6 @@ onMounted(async () => {
     const response = await api.getAllPosts();
     console.log("What is the API actually sending?", response);
     
-    // If the API sends { data: [...] } instead of just [...]
     posts.value = Array.isArray(response) ? response : response.data;
   } catch (err) {
     console.error("Home Load Error:", err);

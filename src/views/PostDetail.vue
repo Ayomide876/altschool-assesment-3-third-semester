@@ -33,15 +33,13 @@ const post = ref(null);
 
 onMounted(async () => {
   try {
-    // This is the updated part:
-    // We convert the ID from the URL (which is a string) into a Number
-    const id = props.id || route.params.id; // Remove Number(...)
+    const id = props.id || route.params.id; 
 post.value = await api.getPostById(id);
     
     post.value = await api.getPostById(id);
   } catch (err) {
     console.error("Error fetching post:", err);
-    // This sends the error to App.vue so the 'Retry' button shows up
+
     throw err; 
   }
 });

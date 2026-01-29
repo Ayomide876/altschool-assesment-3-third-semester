@@ -12,8 +12,6 @@ export const api = {
     }
     
     const data = await res.json();
-    // If the API returns { data: { ... } }, we extract it. 
-    // Otherwise, we take the whole object.
     return data.data ? data.data : data;
   }
 };
